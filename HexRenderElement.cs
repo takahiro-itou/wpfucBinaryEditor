@@ -81,9 +81,9 @@ renderCanvas()
     using (DrawingContext dc = this.m_drawingVisual.RenderOpen())
     {
         //  背景を塗りつぶす。  //
-        dc.DrawRectable(
+        dc.DrawRectangle(
                 Brushes.White, null,
-                new Rect(0, 0, this.ActualWidth, this.AcutualHeight));
+                new Rect(0, 0, this.ActualWidth, this.ActualHeight));
     }
 }
 
