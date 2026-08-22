@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     d:DesignHeight="450" d:DesignWidth="600"
 >
-  <StackPanel Orientation="Vertical">
+  <DockPanel>
 
     <Grid>
       <Grid.ColumnDefinitions>
@@ -24,6 +24,6 @@
        />
     </Grid>
 
-  </StackPanel>
+  </DockPanel>
 
 </UserControl>
