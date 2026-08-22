@@ -17,6 +17,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Windows;
+using System.Windows.Media;
 
 
 namespace  WpfControl.Editor  {
@@ -41,13 +42,13 @@ public  class  HexRenderElement : FrameworkElement
 **/
 public  HexRenderElement()
 {
-    this.m_children = new System.Windows.Media.VisualCollection(this);
+    this.m_children = new VisualCollection(this);
 }
 
 
 //========================================================================
 //
-//    Protected Member Functions.
+//    Protected Member Functions (Overrides).
 //
 
 protected  override  int
@@ -65,18 +66,63 @@ protected  override  void
 OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo)
 {
     base.OnRenderSizeChanged(sizeInfo);
-    Render();
+    renderCanvas();
 }
 
+
+//========================================================================
+//
+//    Protected Member Functions.
+//
+
+protected  virtual  void
+renderCanvas()
+{
+    using (DrawingContext dc = this.m_drawingVisual.RenderOpen())
+    {
+        //  背景を塗りつぶす。  //
+        dc.DrawRectable(
+                Brushes.White, null,
+                new Rect(0, 0, this.ActualWidth, this.AcutualHeight));
+    }
+}
+
+
+//========================================================================
+//
+//    For Internal Use Only.
+//
+
+private  void
+drawText(
+        DrawingContext  dc,
+        System.String   text,
+        double          x,
+        double          y,
+        Brush           brush)
+{
+    double     pixelsPerDip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+    FormattedText   fmtText = new FormattedText(
+            text,
+            CultureInfo.InvariantCulture,
+            FlowDirection.LeftToRight,
+            this.m_typeface,
+            this.m_fontSize,
+            brush,
+            pixelsPerDip);
+    dc.DrawText(fmtText, new Point(x, y));
+}
 
 //========================================================================
 //
 //    Member Variables.
 //
 
-private   System.Windows.Media.VisualCollection     m_children;
-private   System.Windows.Media.DrawingVisual        m_drawingVisual;
+private   VisualCollection      m_children;
+private   DrawingVisual         m_drawingVisual;
 
+private   readonly  Typeface    m_typeface  = new Typeface("Consolas");
+private   readonly  double      m_fontSize  = 13;
 
 }   //  End class  HexRenderElement
 
