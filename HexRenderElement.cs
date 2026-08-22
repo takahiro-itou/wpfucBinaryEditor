@@ -175,7 +175,7 @@ renderCanvas()
         double  posHexX = 96;
         double  posAscX = 420;
 
-        for ( int r = 0; i < visibleRows; ++ r ) {
+        for ( int r = 0; r < visibleRows; ++ r ) {
             int  rowIndex = this.m_currentRowOffset + r;
             if ( totalRows <= rowIndex ) { break; }
 
