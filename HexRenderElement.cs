@@ -53,6 +53,13 @@ public  HexRenderElement()
 //    Accessors.
 //
 
+public  bool
+isEmpty()
+{
+     return ( this.m_data == null || this.m_data.Length == 0 );
+}
+
+
 public  void
 setData(
     byte[]  data)
@@ -66,6 +73,14 @@ setData(
 //
 //    Properties.
 //
+
+//----------------------------------------------------------------
+/**   BytesPerRow プロパティ
+**
+**    一行に表示するバイト数。
+**/
+public  int
+BytesPerRow { get; } = 16;
 
 //----------------------------------------------------------------
 /**   CurrentRowOffset プロパティ
@@ -82,7 +97,6 @@ CurrentRowOffset  {
     }
 }
 
-
 //----------------------------------------------------------------
 /**   RowHeight プロパティ
 **
@@ -91,23 +105,13 @@ CurrentRowOffset  {
 public  double
 RowHeight { get; } = 18;
 
-
-//----------------------------------------------------------------
-/**   BytesPerRow プロパティ
-**
-**    一行に表示するバイト数。
-**/
-public  int
-BytesPerRow { get; } = 16;
-
-
 //----------------------------------------------------------------
 /**   TotalRows  プロパティ
 **
 **    全体の行数。
 **/
 public  int
-TotalRows()  {
+TotalRows  {
     get { return  (int)Math.Ceiling((double)m_data.Length / BytesPerRow); }
 }
 
@@ -118,7 +122,7 @@ TotalRows()  {
 **    画面に表示する行数。
 **/
 public  int
-VisibleRows()  {
+VisibleRows  {
     get { return  (int)Math.Ceiling(this.ActualHeight / this.BytesPerRow); }
 }
 
@@ -155,12 +159,46 @@ OnRenderSizeChanged(System.Windows.SizeChangedInfo sizeInfo)
 protected  virtual  void
 renderCanvas()
 {
+    if ( this.isEmpty() ) { return; }
     using (DrawingContext dc = this.m_drawingVisual.RenderOpen())
     {
         //  背景を塗りつぶす。  //
         dc.DrawRectangle(
                 Brushes.White, null,
                 new Rect(0, 0, this.ActualWidth, this.ActualHeight));
+
+        int visibleRows = this.VisibleRows;
+        int totalRows   = this.TotalRows;
+        double  rHeight = this.RowHeight;
+
+        double  posAdrX = 10;
+        double  posHexX = 96;
+        double  posAscX = 420;
+
+        for ( int r = 0; i < visibleRows; ++ r ) {
+            int  rowIndex = this.m_currentRowOffset + r;
+            if ( totalRows <= rowIndex ) { break; }
+
+            double  y = r * rHeight;
+            int adr = rowIndex * this.BytesPerRow;
+            drawText(dc, adr.ToString("X8"), posAdrX, y, Brushes.Gray);
+
+            StringBuilder   hexBuilder  = new StringBuilder();
+            StringBuilder   ascBuilder  = new StringBuilder();
+            for ( int c = 0; c < this.BytesPerRow; ++ c ) {
+                int  byteIndex  = adr + c;
+                if ( byteIndex < this.m_data.Length ) {
+                    byte  b = this.m_data[byteIndex];
+                    hexBuilder.Append(b.ToString("X2") + " ");
+                    ascBuilder.Append(
+                        b >= 32 && b <= 126 ? (char)b : '.');
+                } else {
+                    hexBuilder.Append("   ");
+                }
+            }
+            drawText(dc, hexBuilder.ToString(), posHexX, y, Brushes.Black);
+            drawText(dc, ascBuilder.ToString(), posAscX, y, Brushes.Blue );
+        }
     }
 }
 
