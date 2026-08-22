@@ -42,7 +42,84 @@ public  class  HexRenderElement : FrameworkElement
 **/
 public  HexRenderElement()
 {
-    this.m_children = new VisualCollection(this);
+    this.m_drawingVisual = new DrawingVisual();
+    this.m_children      = new VisualCollection(this);
+    this.m_children.Add(this.m_drawingVisual);
+}
+
+
+//========================================================================
+//
+//    Accessors.
+//
+
+public  void
+setData(
+    byte[]  data)
+{
+    this.m_data = data;
+    renderCanvas();
+}
+
+
+//========================================================================
+//
+//    Properties.
+//
+
+//----------------------------------------------------------------
+/**   CurrentRowOffset プロパティ
+**
+**/
+public  int
+CurrentRowOffset  {
+    get { return  this.m_currentRowOffset; }
+    set {
+        if ( this.m_currentRowOffset != value ) {
+            this.m_currentRowOffset = value;
+            renderCanvas();
+        }
+    }
+}
+
+
+//----------------------------------------------------------------
+/**   RowHeight プロパティ
+**
+**    一行の高さを（ピクセル単位）。
+**/
+public  double
+RowHeight { get; } = 18;
+
+
+//----------------------------------------------------------------
+/**   BytesPerRow プロパティ
+**
+**    一行に表示するバイト数。
+**/
+public  int
+BytesPerRow { get; } = 16;
+
+
+//----------------------------------------------------------------
+/**   TotalRows  プロパティ
+**
+**    全体の行数。
+**/
+public  int
+TotalRows()  {
+    get { return  (int)Math.Ceiling((double)m_data.Length / BytesPerRow); }
+}
+
+
+//----------------------------------------------------------------
+/**   VisibleRows プロパティ
+**
+**    画面に表示する行数。
+**/
+public  int
+VisibleRows()  {
+    get { return  (int)Math.Ceiling(this.ActualHeight / this.BytesPerRow); }
 }
 
 
@@ -118,11 +195,16 @@ drawText(
 //    Member Variables.
 //
 
+private   readonly  Typeface    m_typeface  = new Typeface("Consolas");
+private   readonly  double      m_fontSize  = 13;
+
 private   VisualCollection      m_children;
 private   DrawingVisual         m_drawingVisual;
 
-private   readonly  Typeface    m_typeface  = new Typeface("Consolas");
-private   readonly  double      m_fontSize  = 13;
+private   byte[]                m_data = Array.Empty<byte>();
+
+private   int                   m_currentRowOffset = 0;
+
 
 }   //  End class  HexRenderElement
 
