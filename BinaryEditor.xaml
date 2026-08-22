@@ -1,0 +1,26 @@
+
+<UserControl x:Class="WpfControl.Editor.BinaryEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:WpfControl.Editor"
+    d:DesignHeight="450" d:DesignWidth="600"
+>
+  <StackPanel Orientation="Vertical">
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <local:HexRenderElement x:Name="hexEditor" />
+      <ScrollBar  x:Name="vsbOffset"
+          Grid.Column="1"
+          Scroll="vsbOffset_Scroll"
+          Orientation="Vertical"
+       />
+    </Grid>
+
+  </StackPanel>
+
+</UserControl>

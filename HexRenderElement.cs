@@ -1,5 +1,4 @@
-
-//  -*-  coding: utf-8-with-signature  -*-  //
+﻿//  -*-  coding: utf-8-with-signature  -*-  //
 /*************************************************************************
 **                                                                      **
 **                  ---  WPF UserControl Library.  ---                  **
