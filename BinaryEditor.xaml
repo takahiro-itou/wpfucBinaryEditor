@@ -21,6 +21,8 @@
           Grid.Column="1"
           Scroll="vsbOffset_Scroll"
           Orientation="Vertical"
+          SmallChange="1"
+          LargeChange="16"
        />
     </Grid>
 
