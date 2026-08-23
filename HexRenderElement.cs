@@ -46,7 +46,7 @@ public  HexRenderElement()
     this.m_children.Add(this.m_drawingVisual);
 
     //  キーボード入力を受け付け。  //
-    this.Forcusable = true;
+    this.Focusable  = true;
 
     //  文字のサイズをあらかじめ計算。  //
     this.m_pixelsPerDip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
@@ -214,6 +214,26 @@ renderCanvas()
 //
 
 //----------------------------------------------------------------
+/**   フォーマット済みテキストを生成する。
+**
+**/
+private  FormattedText
+createFormattedText(
+        System.String   text,
+        Brush           brush)
+{
+    FormattedText   fmtText = new FormattedText(
+            text,
+            CultureInfo.InvariantCulture,
+            FlowDirection.LeftToRight,
+            this.m_typeface,
+            this.m_fontSize,
+            brush,
+            this.m_pixelsPerDip);
+    return ( fmtText );
+}
+
+//----------------------------------------------------------------
 /**   テキストを描画する。
 **
 **/
@@ -225,15 +245,7 @@ drawText(
         double          y,
         Brush           brush)
 {
-    FormattedText   fmtText = new FormattedText(
-            text,
-            CultureInfo.InvariantCulture,
-            FlowDirection.LeftToRight,
-            this.m_typeface,
-            this.m_fontSize,
-            brush,
-            this.m_pixelsPerDip);
-    dc.DrawText(fmtText, new Point(x, y));
+    dc.DrawText(createFormattedText(text, brush), new Point(x, y));
 }
 
 //========================================================================
