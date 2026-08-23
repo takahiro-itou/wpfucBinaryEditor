@@ -44,6 +44,12 @@ public  HexRenderElement()
     this.m_drawingVisual = new DrawingVisual();
     this.m_children      = new VisualCollection(this);
     this.m_children.Add(this.m_drawingVisual);
+
+    //  キーボード入力を受け付け。  //
+    this.Forcusable = true;
+
+    //  文字のサイズをあらかじめ計算。  //
+    this.m_pixelsPerDip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
 }
 
 
@@ -207,6 +213,10 @@ renderCanvas()
 //    For Internal Use Only.
 //
 
+//----------------------------------------------------------------
+/**   テキストを描画する。
+**
+**/
 private  void
 drawText(
         DrawingContext  dc,
@@ -215,7 +225,6 @@ drawText(
         double          y,
         Brush           brush)
 {
-    double     pixelsPerDip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
     FormattedText   fmtText = new FormattedText(
             text,
             CultureInfo.InvariantCulture,
@@ -223,7 +232,7 @@ drawText(
             this.m_typeface,
             this.m_fontSize,
             brush,
-            pixelsPerDip);
+            this.m_pixelsPerDip);
     dc.DrawText(fmtText, new Point(x, y));
 }
 
@@ -238,13 +247,15 @@ private   readonly  double      m_fontSize  = 13;
 private   VisualCollection      m_children;
 private   DrawingVisual         m_drawingVisual;
 
+private   double                m_pixelsPerDip;
+
 private   byte[]                m_data = Array.Empty<byte>();
 
 private   double                m_adrX =  10;
 private   double                m_hexX =  96;
 private   double                m_ascX = 420;
 private   double                m_charWidth;
-
+private   double                m_charHeight;
 private   int                   m_currentRowOffset = 0;
 
 
