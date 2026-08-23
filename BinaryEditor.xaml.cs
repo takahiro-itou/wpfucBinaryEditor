@@ -68,7 +68,7 @@ updateScrollRange()
     int visibleRows = hexEditor.VisibleRows;
 
     vsbOffset.Minimum = 0;
-    vsbOffset.Maximum = Math.Max(0, totalRows - visibleRows);
+    vsbOffset.Maximum = Math.Max(0, totalRows - 1);
     vsbOffset.ViewportSize = visibleRows;
 }
 
