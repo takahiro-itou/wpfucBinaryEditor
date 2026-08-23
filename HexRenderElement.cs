@@ -53,6 +53,10 @@ public  HexRenderElement()
     FormattedText   fmtText = createFormattedText("A", Brushes.Black);
     this.m_charWidth  = fmtText.Width;
     this.m_charHeight = fmtText.Height;
+
+    this.m_adrX =  8;
+    this.m_hexX = (this.m_adrX) + (this.m_charWidth * 9);
+    this.m_ascX = (this.m_hexX) + (this.m_charWidth * BytesPerRow * 3);
 }
 
 
@@ -111,7 +115,7 @@ CurrentRowOffset  {
 **    一行の高さを（ピクセル単位）。
 **/
 public  double
-RowHeight { get; } = 18;
+RowHeight { get; private set; } = 18;
 
 //----------------------------------------------------------------
 /**   TotalRows  プロパティ
@@ -179,9 +183,9 @@ renderCanvas()
         int totalRows   = this.TotalRows;
         double  rHeight = this.RowHeight;
 
-        double  posAdrX = 10;
-        double  posHexX = 96;
-        double  posAscX = 420;
+        double  posAdrX = this.m_adrX;
+        double  posHexX = this.m_hexX;
+        double  posAscX = this.m_ascX;
 
         for ( int r = 0; r < visibleRows; ++ r ) {
             int  rowIndex = this.m_currentRowOffset + r;
