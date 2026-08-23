@@ -240,6 +240,11 @@ private   DrawingVisual         m_drawingVisual;
 
 private   byte[]                m_data = Array.Empty<byte>();
 
+private   double                m_adrX =  10;
+private   double                m_hexX =  96;
+private   double                m_ascX = 420;
+private   double                m_charWidth;
+
 private   int                   m_currentRowOffset = 0;
 
 
