@@ -50,6 +50,9 @@ public  HexRenderElement()
 
     //  文字のサイズをあらかじめ計算。  //
     this.m_pixelsPerDip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+    FormattedText   fmtText = createFormattedText("A", Brushes.Black);
+    this.m_charWidth  = fmtText.Width;
+    this.m_charHeight = fmtText.Height;
 }
 
 
