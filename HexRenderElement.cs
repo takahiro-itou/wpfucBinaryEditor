@@ -191,12 +191,15 @@ renderCanvas()
         //  ヘッダ行を描画する  //
         {
             StringBuilder   hexBuilder  = new StringBuilder();
+            StringBuilder   ascBuilder  = new StringBuilder();
             for ( int c = 0; c < this.BytesPerRow; ++ c ) {
                 hexBuilder.Append("+" + c.ToString("X1"));
                 hexBuilder.Append(
                     ((c & 7) == 7) ? '-' : ' ');
+                ascBuilder.Append(c.ToString("X1"));
             }
             drawText(dc, hexBuilder.ToString(), posHexX, 0, Brushes.Black);
+            drawText(dc, ascBuilder.ToString(), posAscX, 0, Brushes.Blue );
         }
 
         for ( int r = 0; r < visibleRows; ++ r ) {
