@@ -57,6 +57,7 @@ public  HexRenderElement()
     this.m_adrX =  8;
     this.m_hexX = (this.m_adrX) + (this.m_charWidth * 10);
     this.m_ascX = (this.m_hexX) + (this.m_charWidth * (BytesPerRow * 3 + 3));
+    this.RowHeight  = Math.Max(Math.Ceil(this.m_charHeight), 18);
 }
 
 
