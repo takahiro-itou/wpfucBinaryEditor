@@ -56,7 +56,7 @@ public  HexRenderElement()
 
     this.m_adrX =  8;
     this.m_hexX = (this.m_adrX) + (this.m_charWidth * 10);
-    this.m_ascX = (this.m_hexX) + (this.m_charWidth * (BytesPerRow * 3 + 3));
+    this.m_ascX = (this.m_hexX) + (this.m_charWidth * (BytesPerRow * 3 + 2));
     this.RowHeight  = Math.Max(Math.Ceil(this.m_charHeight), 18);
 }
 
@@ -188,6 +188,16 @@ renderCanvas()
         double  posHexX = this.m_hexX;
         double  posAscX = this.m_ascX;
 
+        //  ヘッダ行を描画する  //
+        {
+            StringBuilder   hexBuilder  = new StringBuilder();
+            for ( int c = 0; c < this.BytesPerRow; ++ c ) {
+                hexBuilder.Append("+" + c.ToString("X1"));
+                hexBuilder.Append(
+                    ((c & 7) == 7) ? '-' : ' ');
+            }
+        }
+
         for ( int r = 0; r < visibleRows; ++ r ) {
             int  rowIndex = this.m_currentRowOffset + r;
             if ( totalRows <= rowIndex ) { break; }
@@ -202,7 +212,8 @@ renderCanvas()
                 int  byteIndex  = adr + c;
                 if ( byteIndex < this.m_data.Length ) {
                     byte  b = this.m_data[byteIndex];
-                    hexBuilder.Append(b.ToString("X2") + " ");
+                    hexBuilder.Append(b.ToString("X2")
+                        + ( (c & 7) == 7 ? '-' : ' '));
                     ascBuilder.Append(
                         b >= 32 && b <= 126 ? (char)b : '.');
                 } else {
