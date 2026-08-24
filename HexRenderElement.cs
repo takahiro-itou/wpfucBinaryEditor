@@ -196,13 +196,14 @@ renderCanvas()
                 hexBuilder.Append(
                     ((c & 7) == 7) ? '-' : ' ');
             }
+            drawText(dc, hexBuilder.ToString(), posHexX, 0, Brushes.Black);
         }
 
         for ( int r = 0; r < visibleRows; ++ r ) {
             int  rowIndex = this.m_currentRowOffset + r;
             if ( totalRows <= rowIndex ) { break; }
 
-            double  y = r * rHeight;
+            double  y = (r + 1) * rHeight;
             int adr = rowIndex * this.BytesPerRow;
             drawText(dc, adr.ToString("X8"), posAdrX, y, Brushes.Gray);
 
