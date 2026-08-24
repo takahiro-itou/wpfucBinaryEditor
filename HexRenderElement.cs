@@ -44,6 +44,19 @@ public  HexRenderElement()
     this.m_drawingVisual = new DrawingVisual();
     this.m_children      = new VisualCollection(this);
     this.m_children.Add(this.m_drawingVisual);
+
+    //  キーボード入力を受け付け。  //
+    this.Focusable  = true;
+
+    //  文字のサイズをあらかじめ計算。  //
+    this.m_pixelsPerDip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+    FormattedText   fmtText = createFormattedText("A", Brushes.Black);
+    this.m_charWidth  = fmtText.Width;
+    this.m_charHeight = fmtText.Height;
+
+    this.m_adrX =  8;
+    this.m_hexX = (this.m_adrX) + (this.m_charWidth * 9);
+    this.m_ascX = (this.m_hexX) + (this.m_charWidth * BytesPerRow * 3);
 }
 
 
@@ -102,7 +115,7 @@ CurrentRowOffset  {
 **    一行の高さを（ピクセル単位）。
 **/
 public  double
-RowHeight { get; } = 18;
+RowHeight { get; private set; } = 18;
 
 //----------------------------------------------------------------
 /**   TotalRows  プロパティ
@@ -170,9 +183,9 @@ renderCanvas()
         int totalRows   = this.TotalRows;
         double  rHeight = this.RowHeight;
 
-        double  posAdrX = 10;
-        double  posHexX = 96;
-        double  posAscX = 420;
+        double  posAdrX = this.m_adrX;
+        double  posHexX = this.m_hexX;
+        double  posAscX = this.m_ascX;
 
         for ( int r = 0; r < visibleRows; ++ r ) {
             int  rowIndex = this.m_currentRowOffset + r;
@@ -207,6 +220,30 @@ renderCanvas()
 //    For Internal Use Only.
 //
 
+//----------------------------------------------------------------
+/**   フォーマット済みテキストを生成する。
+**
+**/
+private  FormattedText
+createFormattedText(
+        System.String   text,
+        Brush           brush)
+{
+    FormattedText   fmtText = new FormattedText(
+            text,
+            CultureInfo.InvariantCulture,
+            FlowDirection.LeftToRight,
+            this.m_typeface,
+            this.m_fontSize,
+            brush,
+            this.m_pixelsPerDip);
+    return ( fmtText );
+}
+
+//----------------------------------------------------------------
+/**   テキストを描画する。
+**
+**/
 private  void
 drawText(
         DrawingContext  dc,
@@ -215,16 +252,7 @@ drawText(
         double          y,
         Brush           brush)
 {
-    double     pixelsPerDip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
-    FormattedText   fmtText = new FormattedText(
-            text,
-            CultureInfo.InvariantCulture,
-            FlowDirection.LeftToRight,
-            this.m_typeface,
-            this.m_fontSize,
-            brush,
-            pixelsPerDip);
-    dc.DrawText(fmtText, new Point(x, y));
+    dc.DrawText(createFormattedText(text, brush), new Point(x, y));
 }
 
 //========================================================================
@@ -238,8 +266,15 @@ private   readonly  double      m_fontSize  = 13;
 private   VisualCollection      m_children;
 private   DrawingVisual         m_drawingVisual;
 
+private   double                m_pixelsPerDip;
+
 private   byte[]                m_data = Array.Empty<byte>();
 
+private   double                m_adrX =  10;
+private   double                m_hexX =  96;
+private   double                m_ascX = 420;
+private   double                m_charWidth;
+private   double                m_charHeight;
 private   int                   m_currentRowOffset = 0;
 
 
