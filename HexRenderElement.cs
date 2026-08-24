@@ -55,8 +55,8 @@ public  HexRenderElement()
     this.m_charHeight = fmtText.Height;
 
     this.m_adrX =  8;
-    this.m_hexX = (this.m_adrX) + (this.m_charWidth * 9);
-    this.m_ascX = (this.m_hexX) + (this.m_charWidth * BytesPerRow * 3);
+    this.m_hexX = (this.m_adrX) + (this.m_charWidth * 10);
+    this.m_ascX = (this.m_hexX) + (this.m_charWidth * (BytesPerRow * 3 + 3));
 }
 
 
