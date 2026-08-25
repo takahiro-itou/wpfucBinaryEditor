@@ -198,8 +198,8 @@ renderCanvas()
                     ((c & 7) == 7) ? '-' : ' ');
                 ascBuilder.Append(c.ToString("X1"));
             }
-            drawText(dc, hexBuilder.ToString(), posHexX, 0, Brushes.Black);
-            drawText(dc, ascBuilder.ToString(), posAscX, 0, Brushes.Blue );
+            drawText(dc, hexBuilder.ToString(), posHexX, 0, Brushes.Gray);
+            drawText(dc, ascBuilder.ToString(), posAscX, 0, Brushes.Gray);
         }
 
         for ( int r = 0; r < visibleRows; ++ r ) {
